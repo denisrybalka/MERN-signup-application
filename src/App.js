@@ -1,25 +1,88 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [data, setData] = useState({
+    fullname: "",
+    username: "",
+    password: "",
+    email: "",
+  });
+
+  const handleInputChange = (e) => {
+    setData((prevState) => {
+      return {
+        ...prevState,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const registered = {
+      fullName: data.fullname,
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    };
+
+    axios
+      .post("http://localhost:4000/sign", registered)
+      .then((res) => console.log(res.data));
+
+    setData({
+      fullname: "",
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <form className="card" onSubmit={handleFormSubmit}>
+        <p className="h6">Register</p>
+        <input
+          name="fullname"
+          placeholder="Full Name"
+          onChange={handleInputChange}
+          value={data.fullname}
+          minLength={3}
+          required
+        />
+        <input
+          name="username"
+          placeholder="Username"
+          onChange={handleInputChange}
+          value={data.username}
+          minLength={3}
+          required
+        />
+        <input
+          name="email"
+          placeholder="Email"
+          onChange={handleInputChange}
+          value={data.email}
+          minLength={3}
+          required
+        />
+        <input
+          name="password"
+          placeholder="Password"
+          onChange={handleInputChange}
+          value={data.password}
+          minLength={3}
+          required
+        />
+        <button className="btn btn-success" type="submit">
+          Sign Up
+        </button>
+      </form>
     </div>
   );
-}
+};
 
 export default App;

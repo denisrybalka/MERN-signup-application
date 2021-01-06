@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "../App.css";
 
 const Registration = () => {
+  const history = useHistory();
   const [data, setData] = useState({
     fullname: "",
     username: "",
@@ -39,6 +41,8 @@ const Registration = () => {
       email: "",
       password: "",
     });
+
+    history.push("/login");
   };
 
   return (

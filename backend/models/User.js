@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const signUpTemplate = new mongoose.Schema({
+const User = new mongoose.Schema({
   fullName: {
     type: String,
     require: true,
@@ -23,4 +23,4 @@ const signUpTemplate = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('users', signUpTemplate);
+module.exports = mongoose.model('users', User);

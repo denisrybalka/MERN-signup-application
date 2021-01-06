@@ -30,7 +30,7 @@ const Registration = () => {
     };
 
     axios
-      .post("http://localhost:4000/sign", registered)
+      .post("http://localhost:4000/register", registered)
       .then((res) => console.log(res.data));
 
     setData({

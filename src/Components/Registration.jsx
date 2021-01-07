@@ -12,6 +12,8 @@ const Registration = () => {
     email: "",
   });
 
+  const [error, setError] = useState({ message: "" });
+
   const handleInputChange = (e) => {
     setData((prevState) => {
       return {
@@ -21,7 +23,7 @@ const Registration = () => {
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const registered = {
@@ -31,24 +33,17 @@ const Registration = () => {
       password: data.password,
     };
 
-    axios
+    await axios
       .post("http://localhost:4000/register", registered)
-      .then((res) => console.log(res.data));
-
-    setData({
-      fullname: "",
-      username: "",
-      email: "",
-      password: "",
-    });
-
-    history.push("/login");
+      .then(() => history.push("/login"))
+      .catch(e => setError({ message: "Something went wrong!" }));
   };
 
   return (
     <div className="container">
       <form className="card" onSubmit={handleFormSubmit}>
         <h3 className="text-center">Register</h3>
+        <p className="text-center" style={{ color: "#dc3545" }}>{error.message ? `${error.message}` : null}</p>
         <input
           name="fullname"
           placeholder="Full Name"

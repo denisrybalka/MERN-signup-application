@@ -10,9 +10,11 @@ const App = () => {
   const history = useHistory();
 
   const loginUser = (user) => {
-    localStorage.setItem("user", JSON.stringify(user));
-    setUser(user);
-    history.push("/");
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+      history.push("/");
+    }
   };
 
   const logoutUser = () => {
@@ -34,7 +36,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <Navbar user={user} logoutUser={logoutUser}/>
+      <Navbar user={user} logoutUser={logoutUser} />
       <Switch>
         <Route path="/" exact render={() => <Home user={user} />} />
         <Route path="/login" render={() => <Login loginUser={loginUser} />} />

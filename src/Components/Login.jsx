@@ -1,11 +1,13 @@
-import axios from "axios";
 import React, { useState } from "react";
+import axios from "axios";
 
-const Login = ({loginUser}) => {
+const Login = ({ loginUser }) => {
   const [data, setData] = useState({
     username: "",
     password: "",
   });
+
+  const [error, setError] = useState({ message: "" });
 
   const handleInput = (e) => {
     setData((prevState) => {
@@ -26,12 +28,14 @@ const Login = ({loginUser}) => {
 
     const newUser = await axios
       .post("http://localhost:4000/login", user)
-      .then(res => res.data)
-      .catch((e) => console.error(e));
+      .then(res => {
+        setError({ message: "" });
+        return res.data;
+      }).catch((e) => setError({ message: e.response.data.message }));
 
     setData({
-        username: "",
-        password: "",
+      username: "",
+      password: "",
     })
     loginUser(newUser);
   };
@@ -40,6 +44,7 @@ const Login = ({loginUser}) => {
     <div className="container">
       <form className="card" onSubmit={handleFormSubmit}>
         <h3 className="text-center">Login</h3>
+        <p className="text-center" style={{ color: "#dc3545" }}>{error.message ? `${error.message}` : null}</p>
         <input
           name="username"
           placeholder="Username"

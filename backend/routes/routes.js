@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const createError = require("http-errors");
+const User = require("../models/User");
 
 router.post("/register", (req, res) => {
   try {
@@ -24,9 +25,10 @@ router.post("/register", (req, res) => {
       .catch((err) => {
         res.json(err);
       });
-  } catch (e) {
-    console.error(e);
-    res.json("Registration failed");
+  } catch (error) {
+    console.log(error);
+    res.status(error.status);
+    res.send({message: error.message});
   }
 });
 
@@ -38,14 +40,15 @@ router.post("/login", async (req, res) => {
       if (bcrypt.compareSync(password, loggingUser.password)) {
         res.json(loggingUser);
       } else {
-        res.json("Password is incorrect!");
+        throw createError(401, "Incorrect password!"); 
       }
     } else {
-      res.json("User is not found!");
+      throw createError(403, `User ${username} does not exist!`); 
     }
-  } catch (e) {
-    console.error(e);
-    res.json("Login was failed");
+  } catch (error) {
+    console.log(error);
+    res.status(error.status);
+    res.send({message: error.message});
   }
 });
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ user }) => {
+const Navbar = ({ user, logoutUser }) => {
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark p-2 justify-content-between"
@@ -15,22 +15,25 @@ const Navbar = ({ user }) => {
               Home
             </Link>
           </li>
-          { !user.username ? <React.Fragment>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/register">
-                Registration
-              </Link>
-            </li>
-          </React.Fragment> : null }
+          {!user.username ? (
+            <React.Fragment>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/register">
+                  Registration
+                </Link>
+              </li>
+            </React.Fragment>
+          ) : null}
         </ul>
       </div>
-      <p style={{ color: "white" }}>
+      <p style={{ color: "white",textAlign:"center" }}>
         {user.username ? user.username : "Unknown user"}
+        <button className="btn btn-danger" onClick={logoutUser}>Log Out</button>
       </p>
     </nav>
   );

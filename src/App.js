@@ -15,6 +15,11 @@ const App = () => {
     history.push("/");
   };
 
+  const logoutUser = () => {
+    localStorage.removeItem("user");
+    setUser({});
+  }
+
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("user"));
     if (localUser) {
@@ -29,7 +34,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <Navbar user={user} />
+      <Navbar user={user} logoutUser={logoutUser}/>
       <Switch>
         <Route path="/" exact render={() => <Home user={user} />} />
         <Route path="/login" render={() => <Login loginUser={loginUser} />} />

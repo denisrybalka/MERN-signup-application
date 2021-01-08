@@ -31,10 +31,12 @@ const Navbar = ({ user, logoutUser }) => {
           ) : null}
         </ul>
       </div>
-      <p style={{ color: "white",textAlign:"center" }}>
-        {user.username ? user.username : "Unknown user"}
-        <button className="btn btn-danger" onClick={logoutUser}>Log Out</button>
-      </p>
+      {user.username &&
+        <p style={{ color: "white", textAlign: "center" }}>
+          {user.username}
+          <button className="btn btn-danger" onClick={logoutUser}>Log Out</button>
+        </p>
+      }
     </nav>
   );
 };

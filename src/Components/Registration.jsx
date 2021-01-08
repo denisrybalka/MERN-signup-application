@@ -35,7 +35,7 @@ const Registration = () => {
     await axios
       .post("http://localhost:4000/register", registered)
       .then(() => history.push("/login"))
-      .catch(e => setError("Something went wrong!"));
+      .catch(e => setError(e.response.data.message));
   };
 
   return (

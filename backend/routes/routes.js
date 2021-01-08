@@ -4,27 +4,31 @@ const bcrypt = require("bcryptjs");
 const createError = require("http-errors");
 const User = require("../models/User");
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { fullName, username, password, email } = req.body;
-
     const hashPassword = bcrypt.hashSync(password, 7);
+    const isUnique = !await User.findOne({ username });
 
-    const signedUpUser = new User({
-      fullName,
-      username,
-      password: hashPassword,
-      email,
-    });
-
-    signedUpUser
-      .save()
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((err) => {
-        res.json(err);
+    if (isUnique) {
+      const signedUpUser = new User({
+        fullName,
+        username,
+        password: hashPassword,
+        email,
       });
+
+      await signedUpUser
+        .save()
+        .then((data) => {
+          res.json(data);
+        })
+        .catch((err) => {
+          throw createError(500, "Something went wrong!");
+        });
+    } else {
+      throw createError(403, `User ${username} is already exists!`);
+    }
   } catch (error) {
     console.log(error);
     res.status(error.status);

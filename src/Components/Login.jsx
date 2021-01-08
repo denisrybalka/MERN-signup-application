@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Login = ({ loginUser }) => {
   const [data, setData] = useState({
@@ -8,6 +9,7 @@ const Login = ({ loginUser }) => {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleInput = (e) => {
     setData((prevState) => {
@@ -20,6 +22,7 @@ const Login = ({ loginUser }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const user = {
       username: data.username,
@@ -31,12 +34,9 @@ const Login = ({ loginUser }) => {
       .then(res => {
         setError(null);
         return res.data;
-      }).catch((e) => setError(e.response.data.message));
-
-    setData({
-      username: "",
-      password: "",
-    })
+      })
+      .catch((e) => setError(e.response.data.message))
+      .finally(() => setLoading(false));
 
     loginUser(newUser);
   };
@@ -63,8 +63,8 @@ const Login = ({ loginUser }) => {
           onChange={handleInput}
           value={data.password}
         />
-        <button className="btn btn-success" type="submit">
-          Login
+        <button className="btn btn-success" type="submit" disabled={loading}>
+          {loading ? <ClipLoader loading={loading} color={"white"} /> : "Login"}
         </button>
       </form>
     </div>

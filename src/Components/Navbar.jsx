@@ -34,7 +34,7 @@ const Navbar = ({ user, logoutUser }) => {
       {user.username &&
         <p style={{ color: "white", textAlign: "center" }}>
           {user.username}
-          <button className="btn btn-danger" onClick={logoutUser}>Log Out</button>
+          <button className="btn btn-danger" onClick={logoutUser}>Logout</button>
         </p>
       }
     </nav>

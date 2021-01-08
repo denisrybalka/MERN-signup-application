@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import ClipLoader from 'react-spinners/ClipLoader';
 import "../App.css";
 
 const Registration = () => {
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     fullname: "",
     username: "",
@@ -25,6 +27,7 @@ const Registration = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const registered = {
       fullName: data.fullname,
       username: data.username,
@@ -35,7 +38,10 @@ const Registration = () => {
     await axios
       .post("http://localhost:4000/register", registered)
       .then(() => history.push("/login"))
-      .catch(e => setError(e.response.data.message));
+      .catch(e => {
+        setError(e.response.data.message)
+        setLoading(false);
+      })
   };
 
   return (
@@ -79,8 +85,8 @@ const Registration = () => {
           minLength={3}
           required
         />
-        <button className="btn btn-success" type="submit">
-          Sign Up
+        <button className="btn btn-success" type="submit" disabled={loading}>
+          {loading ? <ClipLoader loading={loading} color={"white"} /> : "Sign Up"}
         </button>
       </form>
     </div>

@@ -28,7 +28,7 @@ router.post("/register", (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(error.status);
-    res.send({message: error.message});
+    res.send({ message: error.message });
   }
 });
 
@@ -40,15 +40,15 @@ router.post("/login", async (req, res) => {
       if (bcrypt.compareSync(password, loggingUser.password)) {
         res.json(loggingUser);
       } else {
-        throw createError(401, "Incorrect password!"); 
+        throw createError(401, "Incorrect password!");
       }
     } else {
-      throw createError(403, `User ${username} does not exist!`); 
+      throw createError(403, `User ${username} does not exist!`);
     }
   } catch (error) {
     console.log(error);
     res.status(error.status);
-    res.send({message: error.message});
+    res.send({ message: error.message });
   }
 });
 

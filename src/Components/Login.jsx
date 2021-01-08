@@ -7,7 +7,7 @@ const Login = ({ loginUser }) => {
     password: "",
   });
 
-  const [error, setError] = useState({ message: "" });
+  const [error, setError] = useState(null);
 
   const handleInput = (e) => {
     setData((prevState) => {
@@ -29,14 +29,15 @@ const Login = ({ loginUser }) => {
     const newUser = await axios
       .post("http://localhost:4000/login", user)
       .then(res => {
-        setError({ message: "" });
+        setError(null);
         return res.data;
-      }).catch((e) => setError({ message: e.response.data.message }));
+      }).catch((e) => setError(e.response.data.message));
 
     setData({
       username: "",
       password: "",
     })
+
     loginUser(newUser);
   };
 
@@ -44,7 +45,7 @@ const Login = ({ loginUser }) => {
     <div className="container">
       <form className="card" onSubmit={handleFormSubmit}>
         <h3 className="text-center">Login</h3>
-        <p className="text-center" style={{ color: "#dc3545" }}>{error.message ? `${error.message}` : null}</p>
+        <p className="text-center" style={{ color: "#dc3545" }}>{error && `${error}`}</p>
         <input
           name="username"
           placeholder="Username"
@@ -56,6 +57,7 @@ const Login = ({ loginUser }) => {
         <input
           name="password"
           placeholder="Password"
+          type="password"
           minLength={3}
           required
           onChange={handleInput}

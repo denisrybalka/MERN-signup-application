@@ -12,7 +12,7 @@ const Registration = () => {
     email: "",
   });
 
-  const [error, setError] = useState({ message: "" });
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     setData((prevState) => {
@@ -25,7 +25,6 @@ const Registration = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
     const registered = {
       fullName: data.fullname,
       username: data.username,
@@ -36,17 +35,18 @@ const Registration = () => {
     await axios
       .post("http://localhost:4000/register", registered)
       .then(() => history.push("/login"))
-      .catch(e => setError({ message: "Something went wrong!" }));
+      .catch(e => setError("Something went wrong!"));
   };
 
   return (
     <div className="container">
       <form className="card" onSubmit={handleFormSubmit}>
         <h3 className="text-center">Register</h3>
-        <p className="text-center" style={{ color: "#dc3545" }}>{error.message ? `${error.message}` : null}</p>
+        <p className="text-center" style={{ color: "#dc3545" }}>{error && `${error}`}</p>
         <input
           name="fullname"
           placeholder="Full Name"
+          type="text"
           onChange={handleInputChange}
           value={data.fullname}
           minLength={3}
@@ -55,6 +55,7 @@ const Registration = () => {
         <input
           name="username"
           placeholder="Username"
+          type="text"
           onChange={handleInputChange}
           value={data.username}
           minLength={3}
@@ -63,6 +64,7 @@ const Registration = () => {
         <input
           name="email"
           placeholder="Email"
+          type="email"
           onChange={handleInputChange}
           value={data.email}
           minLength={3}
@@ -71,6 +73,7 @@ const Registration = () => {
         <input
           name="password"
           placeholder="Password"
+          type="password"
           onChange={handleInputChange}
           value={data.password}
           minLength={3}
